@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Grafik  Pendaftaran</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+    }
+
+    .chart-container {
+      width: 70%;
+      margin: 40px auto;
+      margin-left: 250px;
+      background-color: #fff;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      justify-content: center;
+        align-items: center;
+    }
+
+    .admin-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .admin-info img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .admin-info h4 {
+      margin: 10px 0 0;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    @media (max-width: 767px) {
+    .chart-container {
+        padding: 10px;
+        margin: 20px auto;
+        width: 95%;
+        margin-top: 120px;
+        box-sizing: border-box;
+    }
+    h2 {
+        font-size: 1.2rem;
+    }
+    }
+  </style>
+</head>
+<body>
+
+
+  {% include "sidebar.html" %}
+  <div class="chart-container">
+    <h2>Grafik Pendaftaran</h2>
+    <canvas id="pendaftaranChart"></canvas>
+  </div>
+
+  <script>
+    const dataChart = JSON.parse(`{{ {
+      "total": total,
+      "diterima": diterima,
+      "menunggu": menunggu,
+      "ditolak": ditolak
+    } | tojson | safe }}`);
+
+    const ctx = document.getElementById('pendaftaranChart').getContext('2d');
+    const pendaftaranChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Diterima', 'Ditolak', 'Menunggu', 'Total'],
+        datasets: [
+          {
+            label: 'Status Pendaftaran',
+            data: [dataChart.diterima, dataChart.ditolak, dataChart.menunggu, dataChart.total],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            fill: true,
+            tension: 0.3,
+            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+            pointRadius: 5
+          },
+          {
+            label: 'Menunggu Saja',
+            data: [null, null, dataChart.menunggu, null],
+            borderColor: 'rgba(255, 206, 86, 1)',
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            fill: true,
+            tension: 0.3,
+            pointBackgroundColor: 'rgba(255, 206, 86, 1)',
+            pointRadius: 6,
+            borderDash: [5, 5]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

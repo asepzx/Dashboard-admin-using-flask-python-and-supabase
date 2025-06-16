@@ -1,0 +1,44 @@
+body {
+  background:linear-gradient(rgb(64, 179, 246),rgb(134, 229, 255));
+  margin: 0;
+  }
+  .container-login{
+    min-height: calc(100vh - 60px);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ 
+  .login-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 500px;
+  }
+  .login-card img{
+    max-height: 160px;
+    max-width: 170px;
+  }
+  
+  .login-card h4 {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #74ebd5;
+  }
+  
+  .btn-primary {
+    background-color: #287bda;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #2d53bc;
+  }
+  

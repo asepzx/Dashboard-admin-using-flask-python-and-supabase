@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Dokumen</title>
+    <link rel="stylesheet" href="../static/peserta.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    {% include "sidebar.html" %}
+    <div class="main-content">
+        <div class="container">
+            <h2>📄 Daftar Dokumen Pendaftaran</h2>
+            <div class="table-responsive">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>NIK</th>
+                            <th>Nama Lengkap</th>
+                            <th>Jenis Dokumen</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in dokumen_list %}
+                        <tr>
+                            <td>{{ doc.nik }}</td>
+                            <td>{{ doc.nama_lengkap }}</td>
+                            <td>{{ doc.jenis_dokumen }}</td>
+                            <td><a href="{{ url_for('download_file', url=doc.url_file) }}" class="btn-download">Download</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="/download_all" class="btn-download-all">⬇️ Download Semua</a>
+        </div>
+    </div>
+</body>
+</html>

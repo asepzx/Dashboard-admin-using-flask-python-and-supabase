@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Navbar Slide dari Kanan</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../static/sidebar.css">
+</head>
+<body>
+
+  <!-- Top Navbar untuk Mobile -->
+  <div class="top-navbar">
+    Dashboard Admin
+    <div class="navbar-toggle" id="navbar-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-logo">
+      <img src="../static/logo.png" alt="Foto Admin">
+      <div class="brand">
+          <strong class="text-a">SMAN 1 PARIGI</strong>
+      </div>
+    </div>
+    <ul class="navbar-menu">
+      <li><a href="{{ url_for('dashboard_grafik') }}" class="{% if request.path == '/dashboard_grafik' %}active{% endif %}">Dashboard</a></li>
+      <li><a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}">Tambah Akun Admin</a></li>
+      <li><a href="{{ url_for('akun_admin') }}" class="{% if request.path == '/akun_admin' %}active{% endif %}">Akun Admin</a></li>
+      <li><a href="{{ url_for('notifikasi') }}" class="{% if request.path == '/notifikasi' %}active{% endif %}"> Status Pendaftaran</a></li>
+      <li><a href="{{ url_for('pembayaran') }}" class="{% if request.path == '/pembayaran' %}active{% endif %}"> Status Pembayaran</a></li>
+      <li><a href="{{ url_for('peserta_pendaftaran') }}" class="{% if request.path == '/peserta_pendaftaran' %}active{% endif %}">Dokumen Pendaftaran</a></li>
+    </ul>
+    <div class="logout-section" style="width: 100%; margin-top: auto;">
+    <ul class="navbar-menu">
+       <form action="{{ url_for('logout') }}" method="post" style="margin: 0;">
+        <button type="submit" style="width: 100%; background-color: #356de5; border: none; color: white; padding: 10px 15px; border-radius: 4px; font-weight: 600; ">
+          Logout
+        </button>
+      </form>
+    </ul>
+  </div>
+  </nav>
+   
+  <script>
+    const toggle = document.getElementById('navbar-toggle');
+    const navbar = document.getElementById('navbar');
+
+    toggle.addEventListener('click', () => {
+      navbar.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navbar.contains(e.target) && !toggle.contains(e.target)) {
+        navbar.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

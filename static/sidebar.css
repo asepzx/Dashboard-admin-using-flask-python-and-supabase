@@ -1,0 +1,162 @@
+body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Top Navbar hanya untuk mobile */
+    .top-navbar {
+  display: none;
+  background-color: #3498db;
+  color: white;
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Sidebar utama */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  background-color: #ffffff;
+  color: #333;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 230px;
+  height: 100vh;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+    .navbar-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+      width: 100%;
+    }
+
+    .navbar-logo img {
+      border-radius: 20px;
+      margin-top: 20px;
+      height: 150px;
+      width: 150px;
+    }
+
+    .navbar-logo p {
+      font-size: 15px;
+      color: rgb(4, 252, 70);
+    }
+
+    .navbar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      flex-grow: 1;
+    }
+
+    .navbar-menu li {
+      margin-bottom: 15px;
+    }
+
+    .navbar-menu li a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  padding: 12px 18px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navbar-menu li a:hover,
+.navbar-menu li a.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.logout-section a {
+  color: #8f170a;
+  font-weight: bold;
+  padding: 10px 15px;
+  display: block;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.logout-section a:hover {
+  background-color: #fdd;
+}
+    .logo-pi {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .brand strong {
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    .navbar-toggle {
+      display: none;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.8rem;
+      color: rgb(15, 2, 2);
+      cursor: pointer;
+      z-index: 1100;
+      user-select: none;
+    }
+    .logout-section a {
+      color: white;
+      font-weight: bold;
+      background-color: #3498db;
+    }
+
+    .logout-section a:hover {
+      background-color: #c62828;
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 767px) {
+      .top-navbar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+        background-color: #3498db;
+        color: white;
+        text-align: left;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: auto;
+        right: -250px;
+        width: 250px;
+        height: 100vh;
+        background-color: white;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+        transition: right 0.3s ease-in-out;
+      }
+
+      .navbar.show {
+        right: 0;
+      }
+
+      .navbar-toggle {
+        display: block;
+      }
+    }

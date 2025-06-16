@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Tambah responsif viewport -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      margin-left: 250px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    select, button {
+      padding: 6px 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #2ecc71;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: #95a5a6;
+    }
+
+    .alert {
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #2ecc71;
+      color: white;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+        padding: 15px;
+        margin-top: 60px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead tr {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 15px;
+        border-bottom: 2px solid #ddd;
+      }
+
+      td {
+        text-align: left;
+        position: relative;
+        padding-left: 50%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      select, button {
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  {% include "sidebar.html" %}
+  <div class="container">
+    <h2>Data Pembayaran</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Total</th>
+          <th>Metode Pembayaran</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+           <td>{{ user.nama_lengkap }}</td>
+            <td>{{ user.amount }}</td>
+            <td>{{ user.payment_method }}</td>
+            
+          <td data-label="Status">
+            <form method="POST" action="{{ url_for('update_status_pembayaran') }}" class="notifikasi-form">
+              <input type="hidden" name="user_id" value="{{ user.id }}">
+              <select name="isi" required class="select-notifikasi">
+                <option value="" disabled selected>{{ user.status }}</option>
+                <option value="PENDING">PENDING</option>
+                <option value="PAID">PAID</option>
+                <option value="EXPIRED">EXPIRED</option>
+                <option value="FAILED">FAILED</option>
+              </select>
+              <button type="submit" disabled>Kirim</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const forms = document.querySelectorAll(".notifikasi-form");
+
+      forms.forEach(function (form) {
+        const select = form.querySelector("select");
+        const button = form.querySelector("button");
+
+        select.addEventListener("change", function () {
+          button.disabled = select.value === "";
+        });
+      });
+    });
+  </script>
+</body>
+</html>
