@@ -209,12 +209,13 @@ def notifikasi():
 def update_status_pendaftaran():
     user_id = request.form.get('user_id')
     new_status = request.form.get('isi')
+    print("User ID:", user_id)
+    print("New Status:", new_status)
     try:
-        supabase.table("pendaftaran").update({"verifikasi": new_status}).eq("user_id",user_id).execute()
+        supabase.table("pendaftaran").update({"verifikasi": new_status}).eq("id",user_id).execute()
         flash("Status Pendaftaran berhasil diperbarui", "admin_success")
     except Exception as e:
         flash("Gagal memperbarui status Pendaftaran: " , "admin_danger")
-
     return redirect(url_for('notifikasi'))
 
 @app.route('/pembayaran', methods=['GET'])
@@ -324,9 +325,6 @@ def download_all_zip():
         return Response(f"Terjadi kesalahan saat membuat ZIP", status=500)
 
 @app.route('/kirim_notifikasi', methods=['POST'])
-
-
-
 @app.route('/logout', methods=['POST'])
 def logout():
     session.clear() 
