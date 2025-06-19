@@ -43,8 +43,8 @@ body {
     .navbar-logo img {
       border-radius: 20px;
       margin-top: 10px;
-      height: 130px;
-      width: 130px;
+      max-height: 130px;
+      max-width: 130px;
     }
 
     .navbar-logo p {
@@ -64,7 +64,7 @@ body {
       margin-bottom: 15px;
     }
 
-    .navbar-menu li a {
+  .navbar-menu li a {
   color: #333;
   text-decoration: none;
   font-weight: 500;
@@ -125,6 +125,15 @@ body {
     .logout-section a:hover {
       background-color: #c62828;
     }
+    .logout{
+      width: 100%; 
+      background-color: #356de5; 
+      border: none; 
+      color: white; 
+      padding: 10px 15px; 
+      border-radius: 4px; 
+      font-weight: 600; 
+    }
 
     /* ===== MOBILE ===== */
     @media (max-width: 767px) {
@@ -139,7 +148,6 @@ body {
         color: white;
         text-align: left;
       }
-
       .navbar {
         position: fixed;
         top: 0;
@@ -151,12 +159,31 @@ body {
         box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
         transition: right 0.3s ease-in-out;
       }
-
       .navbar.show {
         right: 0;
       }
 
       .navbar-toggle {
         display: block;
+      }
+    }
+    @media (max-height: 700px) {
+      .top-navbar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+        background-color: #3498db;
+        color: white;
+        text-align: left;
+      }
+      .navbar-menu li {
+      margin: 0;
+      }
+      .navbar-menu li a{
+      margin: 0;
+      padding: 10px;
       }
     }
