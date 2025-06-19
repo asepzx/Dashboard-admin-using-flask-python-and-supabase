@@ -128,7 +128,7 @@ def dashboard_grafik():
     total = len(pendaftar)
     diterima = len([p for p in pendaftar if p.get('verifikasi') == 'diterima' and 'Menunggu'])
     menunggu = len([p for p in pendaftar if p.get('verifikasi') == 'menunggu' and 'Menunggu'])
-    ditolak = len([p for p in pendaftar if p.get('verifikasi') == 'Tidak Diterima' and 'tidak diterima'])
+    ditolak = len([p for p in pendaftar if p.get('verifikasi') == 'ditolak' and 'tidak diterima'])
 
     return render_template("grafik.html",
                            total=total,
