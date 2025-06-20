@@ -2,39 +2,157 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Dokumen</title>
-    <link rel="stylesheet" href="../static/peserta.css">
+    <title>Daftar Dokumen Pendaftaran</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-content {
+            padding: 20px;
+            margin-left: 220px; /* Jika ada sidebar */
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background-color: #fff;
+            padding: 25px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .accordion {
+            background-color: #e2e8f0;
+            color: #333;
+            cursor: pointer;
+            padding: 14px 20px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            transition: 0.3s;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .accordion:hover {
+            background-color: #cbd5e0;
+        }
+
+        .panel {
+            padding: 0 18px 15px 18px;
+            display: none;
+            background-color: #f9f9f9;
+            overflow: hidden;
+            border-radius: 0 0 8px 8px;
+            margin-bottom: 15px;
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .styled-table th {
+            background-color: #edf2f7;
+            color: #333;
+        }
+
+        .btn-download {
+            display: inline-block;
+            background-color: #3182ce;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn-download:hover {
+            background-color: #2b6cb0;
+        }
+
+        .btn-download-all {
+            margin-top: 20px;
+            display: inline-block;
+            background-color: #2f855a;
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .btn-download-all:hover {
+            background-color: #276749;
+        }
+    </style>
 </head>
 <body>
     {% include "sidebar.html" %}
     <div class="main-content">
         <div class="container">
             <h2>📄 Daftar Dokumen Pendaftaran</h2>
-            <div class="table-responsive">
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <th>NIK</th>
-                            <th>Nama Lengkap</th>
-                            <th>Jenis Dokumen</th>
-                            <th> </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for doc in dokumen_list %}
-                        <tr>
-                            <td>{{ doc.nik }}</td>
-                            <td>{{ doc.nama_lengkap }}</td>
-                            <td>{{ doc.jenis_dokumen }}</td>
-                            <td><a href="{{ url_for('download_file', url=doc.url_file) }}" class="btn-download">Download</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+
+            <div class="accordion-container">
+                {% for peserta in dokumen_list %}
+                <button class="accordion">{{ peserta.nama_lengkap }} ({{ peserta.nik }})</button>
+                <div class="panel">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Jenis Dokumen</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in peserta.dokumen %}
+                            <tr>
+                                <td>{{ doc.jenis_dokumen }}</td>
+                                <td><a href="{{ url_for('download_file', url=doc.url_file) }}" class="btn-download">Download</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
             </div>
+
             <a href="/download_all" class="btn-download-all">⬇️ Download Semua</a>
         </div>
     </div>
+
+    <script>
+        const acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                const panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
 </body>
 </html>
