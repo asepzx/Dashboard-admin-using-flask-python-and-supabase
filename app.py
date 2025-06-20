@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import datetime
 from io import BytesIO
 import mimetypes
@@ -246,25 +247,31 @@ def update_status_pembayaran():
 
 @app.route("/peserta_pendaftaran")
 def peserta_pendaftaran():
-    # Ambil semua dokumen
     dokumen_response = supabase.table("dokumen_pendaftaran").select("*").execute()
     dokumen_list = dokumen_response.data
 
-    # Ambil semua pendaftaran
     pendaftaran_response = supabase.table("pendaftaran").select("*").execute()
     pendaftaran_list = {p['id']: p for p in pendaftaran_response.data}
 
-    # Gabungkan data dokumen dengan data pendaftaran berdasarkan pendaftaran_id
+    grouped_docs = defaultdict(lambda: {'nik': '', 'nama_lengkap': '', 'dokumen': []})
+
     for doc in dokumen_list:
         pendaftar = pendaftaran_list.get(doc['pendaftaran_id'], {})
-        doc['nik'] = pendaftar.get('nik', '-')
-        doc['nama_lengkap'] = pendaftar.get('nama_lengkap', '-')
-        doc['asal_sekolah'] = pendaftar.get('asal_sekolah', '-')
+        nama = pendaftar.get('nama_lengkap', '-')
+        nik = pendaftar.get('nik', '-')
+        grouped_docs[nama]['nik'] = nik
+        grouped_docs[nama]['nama_lengkap'] = nama
+        grouped_docs[nama]['dokumen'].append(doc)
+
+    dokumen_grouped = list(grouped_docs.values())
+
     users = get_all_users()
-    return render_template("peserta_pendaftaran.html", dokumen_list=dokumen_list, users=users,
+    return render_template("peserta_pendaftaran.html",
+                           dokumen_list=dokumen_grouped,
+                           users=users,
                            nama_admin=session.get('nama_admin'),
                            foto_admin=session.get('foto_admin'))
-@app.route('/download/<path:url>')
+@app.route('/download_file/<path:url>')
 def download_file(url):
     try:
         # Ubah kembali URL yang di-encode oleh browser (misalnya %2F jadi /)
@@ -272,8 +279,7 @@ def download_file(url):
         
         # Ambil file dari URL
         r = requests.get(full_url, stream=True)
-        r.raise_for_status()  # Naikkan error kalau gagal
-
+        r.raise_for_status()
         # Dapatkan nama file dari URL
         filename = full_url.split("/")[-1]
 
@@ -297,8 +303,7 @@ def download_all_zip():
 
         if not dokumen_list:
             return Response("Tidak ada dokumen ditemukan.", status=404)
-
-        # Siapkan ZIP dalam memory
+        
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
             for doc in dokumen_list:
